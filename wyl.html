@@ -13,7 +13,7 @@
         }
 
         canvas {
-		float:left;
+		    float:left;
             position: absolute;
             width: 100%;
             height: 100%;
@@ -124,17 +124,32 @@
             color: #ea80b0;
         }
 		 #frame{
-     
-     
-            position: relative;
+            position: absolute;
             width: 400px;
             height: 300px;
-            margin: 50% auto;
+            margin: 50% 30%;
 			
         }
+		.child1{
+            position: absolute;
+			width: 100%;
+            height: 200px;
+			text-align: center;
+line-height: 200px;
+		}
+		p{
+			text-indent: 2em;
+            letter-spacing: 2pt;
+            font-family: 微软雅黑;
+            font-size: 16px;
+            text-align: justify;
+            line-height: 27px;
+            color: #ffe2e2;
+			margin:0;
+			padding:0;
+			display: inline-block;
+		}
         .left,.right{
-     
-     
             top: 0;
             width: 200px;
             height: 200px;
@@ -196,14 +211,44 @@
 </head>
 
 <body>
-   <div class="parent">
-  <div class="child1">Div 1</div>
-  <div class="child2">Div 2</div>
-</div>
 
+<audio src="smh.mp3" autostart="true" loop="true" hidden="true"></audio>
+
+  <div class="child1"><p id="lovetime"></p></div>
     <canvas id="canvas" width="1920" height="947"></canvas>
 
     <script type="text/javascript">
+	var temp = '';
+		function lovetime() {
+    window.setTimeout("lovetime()", 1000);
+		var seconds = 1000
+		var minutes = seconds * 60
+		var hours = minutes * 60
+		var days = hours * 24
+		var years = days * 365
+		var today = new Date()
+		var todayYear = today.getFullYear()
+		var todayMonth = today.getMonth()
+		var todayDate = today.getDate()
+		var todayHour = today.getHours()
+		var todayMinute = today.getMinutes()
+		var todaySecond = today.getSeconds()
+		// 修改这里时间即可 我的是2020.11.19
+		var t1 = Date.UTC(2024, 3, 16, 12, 30, 00)
+		var t2 = Date.UTC(todayYear, todayMonth, todayDate, todayHour, todayMinute, todaySecond)
+		var diff = t2 - t1
+		var diffYears = Math.floor(diff / years)
+		var diffDays = Math.floor((diff / days) - diffYears * 365)
+		var diffHours = Math.floor((diff - (diffYears * 365 + diffDays) * days) / hours)
+		var diffMinutes = Math.floor((diff - (diffYears * 365 + diffDays) * days - diffHours * hours) / minutes)
+		var diffSeconds = Math.floor((diff - (diffYears * 365 + diffDays) * days - diffHours * hours - diffMinutes *
+			minutes) / seconds)
+		document.getElementById("lovetime").innerHTML = "已经和王玉琳认识 " + diffYears + "年" + diffDays + "天" +
+			diffHours + "小时" + diffMinutes + "分钟" + diffSeconds + "秒啦🎉"
+			temp = diffSeconds
+}
+lovetime()
+
         const colors = [
             "#a1eafb",
             "#fdfdfd",
@@ -240,7 +285,9 @@
             for (var i = 0; i < 100; i++) {
                 hearts.push(new Heart());
             }
+			
         }
+		
 
         function Heart() {
             this.x = Math.random() * ww;
@@ -252,6 +299,7 @@
             };
             this.targetScale = Math.random() * 0.15 + 0.02;
             this.scale = this.targetScale * Math.random();
+			this.temp = temp;
         }
 
         Heart.prototype.update = function (i) {
@@ -276,7 +324,7 @@
             // ctx.font="20px";
             ctx.fillStyle = colors[i % 18];
             ctx.fillText(
-                "王玉琳",
+                '王玉琳',
                 this.x - this.width * 0.5,
                 this.y - this.height * 0.5,
                 this.width,
@@ -296,12 +344,14 @@
             }
             requestAnimationFrame(render);
         }
-        init();
+		init()
+       
 
         window.addEventListener("resize", function () {
             ww = window.innerWidth;
             wh = window.innerHeight;
         });
+		
     </script>
 
 <div id="frame">
