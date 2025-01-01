@@ -75,7 +75,7 @@ class Firework {
         // 调整移动端的目标高度
         const isMobile = window.innerWidth < 768;
         this.targetY = isMobile ? 
-            y * 0.4 + Math.random() * (y * 0.2) : // 移动端更低的爆炸高度
+           y * 0.7 + Math.random() * (y * 0.2) : // 移动端更低的爆炸高度
             y * 0.2 + Math.random() * (y * 0.4);
         this.speed = 15 + Math.random() * 3;
         this.angle = Math.PI * 1.5;
