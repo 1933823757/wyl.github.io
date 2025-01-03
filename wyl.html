@@ -128,7 +128,7 @@
             width: 400px;
             height: 300px;
             margin: 50% 30%;
-			
+            transform: translateY(-50%);
         }
 		.child1{
             position: absolute;
@@ -149,62 +149,45 @@ line-height: 200px;
 			padding:0;
 			display: inline-block;
 		}
-        .left,.right{
+        .left,.right {
             top: 0;
             width: 200px;
             height: 200px;
             border-radius: 50%;
         }
-        .left{
-     
-     
+        .left {
             left: 35px;
-
         }
-        .right{
-     
-     
+        .right {
             right: 35px;
             z-index: -1;
         }
-        .bottom{
-     
-     
+        .bottom {
             bottom: 36px;
             left: 100px;
             width: 200px;
             height: 200px;
             transform: rotate(45deg);
             z-index: -1;
-
         }
-        .heart{
-     
-     
+        .heart {
             position: absolute;
-            box-shadow:0 0 40px #d5093c;
+            box-shadow: 0 0 40px #d5093c;
             animation: beat .8s ease infinite normal;
             background: linear-gradient(-90deg, #F50A45 0%, #d5093c 40%);
         }
         @keyframes beat {
-     
-     
-            0%{
-     
-     
+            0% {
                 transform: scale(1) rotate(225deg);
-                box-shadow:0 0 40px #d5093c;
+                box-shadow: 0 0 40px #d5093c;
             }
-            50%{
-     
-     
+            50% {
                 transform: scale(1.1) rotate(225deg);
                 box-shadow: 0 0 70px #d5093c;
             }
-            100%{
-     
+            100% {
                 transform: scale(1) rotate(225deg);
-                box-shadow: 0 0 40px #d5093c;;
+                box-shadow: 0 0 40px #d5093c;
             }
         }
     </style>
@@ -212,7 +195,68 @@ line-height: 200px;
 
 <body>
 
-<audio src="https://115.67.207.13/wyl.github.io/dy.mp3" autostart="true" loop="true" hidden="true"></audio>
+<audio id="bgMusic" preload="auto" src="https://1933823757.github.io/wyl.github.io/dy.mp3" loop="loop">
+    <source src="https://1933823757.github.io/wyl.github.io/dy.mp3" type="audio/mpeg">
+</audio>
+<button onclick="toggleMusic()" style="position: fixed; bottom: 20px; right: 20px; z-index: 999; padding: 10px 20px; background: rgba(234, 128, 176, 0.8); color: white; border: none; border-radius: 5px; cursor: pointer;">
+    ♫ 播放/暂停音乐
+</button>
+
+<script>
+function toggleMusic() {
+    const audio = document.getElementById('bgMusic');
+    if (audio.paused) {
+        audio.muted = false;
+        audio.currentTime = audio.currentTime || 0;
+        audio.play();
+    } else {
+        audio.pause();
+    }
+}
+
+// 修改音频自动播放相关代码
+window.addEventListener('load', function() {
+    const audio = document.getElementById('bgMusic');
+    audio.loop = true;
+    
+    // 方法1: 尝试多种用户交互事件来触发播放
+    function tryToPlay() {
+        audio.muted = false;
+        audio.currentTime = 0;
+        audio.play().catch(function(error) {
+            console.log("播放失败，等待用户交互");
+        });
+    }
+    
+    // 监听多个事件来尝试播放
+    document.addEventListener('click', tryToPlay, { once: true });
+    document.addEventListener('touchstart', tryToPlay, { once: true });
+    document.addEventListener('mousemove', tryToPlay, { once: true });
+    document.addEventListener('keydown', tryToPlay, { once: true });
+    
+    // 方法2: 添加静音自动播放，用户交互后取消静音
+    audio.muted = true;
+    audio.play().then(function() {
+        // 等待用户首次交互时取消静音
+        function unmute() {
+            audio.muted = false;
+            document.removeEventListener('click', unmute);
+            document.removeEventListener('touchstart', unmute);
+        }
+        document.addEventListener('click', unmute);
+        document.addEventListener('touchstart', unmute);
+    });
+
+    // 添加音频结束事件监听
+    audio.addEventListener('ended', function() {
+        // 音频播放结束时，重新开始播放
+        audio.currentTime = 0;
+        audio.play().catch(function(error) {
+            console.log("重新播放失败");
+        });
+    });
+});
+</script>
 
   <div class="child1"><p id="lovetime"></p>
   <br><p class="style:'align='center''">有些话我真的没勇气和你说，我只能在这和你说了。我真的好像和你在一起，我也喜欢你，喜欢和你打游戏，喜欢和你聊天，喜欢和你分享日常。但是我真的好怕我耽搁你，毕竟我比你大这么多，而且我也毕业了，要工作了，陪你的时间也真的好少，怕没有及时回你消息会让你乱想。而且我长得也不好看，和你在一起我会好自卑的库😭然后那几天，我不是我不想理你，那一周我爷爷住院了，然后心情真的很不好，然后又看你发消息，都没和我分享日常了，就感觉你不想理我了，然后我就更加的不开兴了，但是我又不能和你说。
@@ -226,140 +270,250 @@ line-height: 200px;
     <canvas id="canvas" width="1920" height="947"></canvas>
 
     <script type="text/javascript">
-	var temp = '';
-		function lovetime() {
-    window.setTimeout("lovetime()", 1000);
-		var seconds = 1000
-		var minutes = seconds * 60
-		var hours = minutes * 60
-		var days = hours * 24
-		var years = days * 365
-		var today = new Date()
-		var todayYear = today.getFullYear()
-		var todayMonth = today.getMonth()
-		var todayDate = today.getDate()
-		var todayHour = today.getHours()
-		var todayMinute = today.getMinutes()
-		var todaySecond = today.getSeconds()
-		// 修改这里时间即可 我的是2020.11.19
-		var t1 = Date.UTC(2024, 3, 16, 12, 30, 00)
-		var t2 = Date.UTC(todayYear, todayMonth, todayDate, todayHour, todayMinute, todaySecond)
-		var diff = t2 - t1
-		var diffYears = Math.floor(diff / years)
-		var diffDays = Math.floor((diff / days) - diffYears * 365)
-		var diffHours = Math.floor((diff - (diffYears * 365 + diffDays) * days) / hours)
-		var diffMinutes = Math.floor((diff - (diffYears * 365 + diffDays) * days - diffHours * hours) / minutes)
-		var diffSeconds = Math.floor((diff - (diffYears * 365 + diffDays) * days - diffHours * hours - diffMinutes *
-			minutes) / seconds)
-		document.getElementById("lovetime").innerHTML = "已经和王玉琳认识 " + diffYears + "年" + diffDays + "天" +
-			diffHours + "小时" + diffMinutes + "分钟" + diffSeconds + "秒啦🎉"
-			temp = diffSeconds
-}
-lovetime()
+    // 添加回颜色数组和必要的变量
+    const colors = [
+        "#a1eafb", "#fdfdfd", "#ffcef3", "#cabbe9",
+        "#bad7df", "#ffe2e2", "#99ddcc", "#08d9d6",
+        "#252a34", "#ff2e63", "#defcf9", "#cadefc",
+        "#c3bef0", "#cca8e9", "#cbd7ac", "#e8c6c0",
+        "#dc9898", "#ecc8ba"
+    ];
+    
+    const canvas = document.getElementById("canvas");
+    const ctx = canvas.getContext("2d");
+    const hearts = [];
 
-        const colors = [
-            "#a1eafb",
-            "#fdfdfd",
-            "#ffcef3",
-            "#cabbe9",
-            "#bad7df",
-            "#ffe2e2",
-            "#99ddcc",
-            "#08d9d6",
-            "#252a34",
-            "#ff2e63",
-            "#defcf9",
-            "#cadefc",
-            "#c3bef0",
-            "#cca8e9",
-            "#cbd7ac",
-            "#e8c6c0",
-            "#dc9898",
-            "#ecc8ba",
-        ]; //用来设置的颜色
-        var canvas = document.getElementById("canvas");
-        var ctx = canvas.getContext("2d");
-        let count = 1;
+    // 添加窗口大小监听
+    window.addEventListener("resize", function() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    });
 
-        var ww = window.innerWidth;
-        var wh = window.innerHeight;
-
-        var hearts = [];
-
-        function init() {
-            requestAnimationFrame(render);
-            canvas.width = ww;
-            canvas.height = wh;
-            for (var i = 0; i < 100; i++) {
-                hearts.push(new Heart());
-            }
-			
-        }
-		
-
-        function Heart() {
-            this.x = Math.random() * ww;
-            this.y = Math.random() * wh;
-            this.opacity = Math.random() * 0.5 + 0.5;
-            this.vel = {
-                x: (Math.random() - 0.5) * 4,
-                y: (Math.random() - 0.5) * 4,
-            };
-            this.targetScale = Math.random() * 0.15 + 0.02;
-            this.scale = this.targetScale * Math.random();
-			this.temp = temp;
-        }
-
-        Heart.prototype.update = function (i) {
-            this.x += this.vel.x;
-            this.y += this.vel.y;
-
-            this.scale += (this.targetScale - this.scale) * 0.01;
-            if (this.x - this.width > ww || this.x + this.width < 0) {
-                this.scale = 0;
-                this.x = Math.random() * ww;
-            }
-            if (this.y - this.height > wh || this.y + this.height < 0) {
-                this.scale = 0;
-                this.y = Math.random() * wh;
-            }
+    // 优化 Heart 类
+    class Heart {
+        constructor() {
             this.width = 473.8;
             this.height = 408.6;
-        };
-        Heart.prototype.draw = function (i) {
+            this.reset();
+            this.opacity = Math.random() * 0.5 + 0.5;
+            this.targetScale = Math.random() * 0.15 + 0.02;
+            this.scale = this.targetScale * Math.random();
+        }
+        
+        reset() {
+            this.x = Math.random() * window.innerWidth;
+            this.y = Math.random() * window.innerHeight;
+            this.vel = {
+                x: (Math.random() - 0.5) * 4,
+                y: (Math.random() - 0.5) * 4
+            };
+        }
+        
+        update() {
+            this.x += this.vel.x;
+            this.y += this.vel.y;
+            this.scale += (this.targetScale - this.scale) * 0.01;
+            
+            if (this.isOutOfBounds()) {
+                this.scale = 0;
+                this.reset();
+            }
+        }
+        
+        isOutOfBounds() {
+            return (
+                this.x - this.width > window.innerWidth ||
+                this.x + this.width < 0 ||
+                this.y - this.height > window.innerHeight ||
+                this.y + this.height < 0
+            );
+        }
+        
+        draw(ctx, i, colors) {
             ctx.globalAlpha = this.opacity;
             ctx.font = `${180 * this.scale}px "微软雅黑"`;
-            // ctx.font="20px";
-            ctx.fillStyle = colors[i % 18];
-            ctx.fillText(
-                '王玉琳',
-                this.x - this.width * 0.5,
-                this.y - this.height * 0.5,
-                this.width,
-                this.height
-            );
-
-        };
-
-        function render() {
-            ctx.clearRect(0, 0, ww, wh);
-            // ctx.globalAlpha = 1;
-            // ctx.fillStyle = "rgba(255,255,255,0.3)";
-            // ctx.fillRect(0, 0, ww, wh);
-            for (var i = 0; i < 100; i++) {
-                hearts[i].update(i);
-                hearts[i].draw(i);
-            }
-            requestAnimationFrame(render);
+            ctx.fillStyle = colors[i % colors.length];
+            ctx.fillText('王玉琳', this.x - this.width * 0.5, this.y - this.height * 0.5);
         }
-		init()
-       
+    }
 
-        window.addEventListener("resize", function () {
-            ww = window.innerWidth;
-            wh = window.innerHeight;
+    // 添加计时器函数
+    function lovetime() {
+        const second = 1000;
+        const minute = second * 60;
+        const hour = minute * 60;
+        const day = hour * 24;
+        const year = day * 365;
+        
+        const startDate = new Date(2024, 3, 16, 12, 30, 0);
+        
+        function updateTimer() {
+            const now = new Date();
+            const diff = now - startDate;
+            
+            const years = Math.floor(diff / year);
+            const days = Math.floor((diff % year) / day);
+            const hours = Math.floor((diff % day) / hour);
+            const minutes = Math.floor((diff % hour) / minute);
+            const seconds = Math.floor((diff % minute) / second);
+            
+            document.getElementById("lovetime").innerHTML = 
+                `已经和王玉琳认识 ${years}年${days}天${hours}小时${minutes}分钟${seconds}秒啦🎉`;
+            
+            requestAnimationFrame(updateTimer);
+        }
+        
+        updateTimer();
+    }
+
+    // 在原有代码的基础上，在 render 函数之前添加烟花相关的类
+    class Firework {
+        constructor() {
+            this.reset();
+        }
+
+        reset() {
+            this.x = Math.random() * canvas.width;
+            this.y = canvas.height;
+            this.targetY = Math.random() * (canvas.height * 0.3);
+            this.speed = 3 + Math.random() * 4;
+            this.particles = [];
+            this.exploded = false;
+            this.colors = [
+                `hsl(${Math.random() * 360}, 100%, 50%)`,
+                `hsl(${Math.random() * 360}, 100%, 50%)`,
+                `hsl(${Math.random() * 360}, 100%, 70%)`
+            ];
+        }
+
+        update() {
+            if (!this.exploded) {
+                this.y -= this.speed;
+                if (this.y <= this.targetY) {
+                    this.explode();
+                }
+            } else {
+                for (let i = this.particles.length - 1; i >= 0; i--) {
+                    const p = this.particles[i];
+                    p.update();
+                    if (p.alpha <= 0) {
+                        this.particles.splice(i, 1);
+                    }
+                }
+                if (this.particles.length === 0) {
+                    this.reset();
+                }
+            }
+        }
+
+        explode() {
+            this.exploded = true;
+            for (let i = 0; i < 120; i++) {
+                this.particles.push(new Particle(
+                    this.x, 
+                    this.y, 
+                    this.colors[Math.floor(Math.random() * this.colors.length)]
+                ));
+            }
+        }
+
+        draw(ctx) {
+            if (!this.exploded) {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, 3, 0, Math.PI * 2);
+                ctx.fillStyle = this.colors[0];
+                ctx.fill();
+            }
+            for (const p of this.particles) {
+                p.draw(ctx);
+            }
+        }
+    }
+
+    class Particle {
+        constructor(x, y, color) {
+            this.x = x;
+            this.y = y;
+            this.color = color;
+            this.alpha = 1;
+            const angle = Math.random() * Math.PI * 2;
+            const speed = Math.random() * 8 + 3;
+            this.vx = Math.cos(angle) * speed;
+            this.vy = Math.sin(angle) * speed;
+            this.gravity = 0.15;
+            this.size = Math.random() * 3 + 1;
+        }
+
+        update() {
+            this.x += this.vx;
+            this.y += this.vy;
+            this.vy += this.gravity;
+            this.alpha -= 0.008;
+        }
+
+        draw(ctx) {
+            ctx.save();
+            ctx.globalAlpha = this.alpha;
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            ctx.fillStyle = this.color;
+            ctx.shadowBlur = 20;
+            ctx.shadowColor = this.color;
+            ctx.fill();
+            ctx.restore();
+        }
+    }
+
+    // 创建烟花数组
+    const fireworks = Array(8).fill().map(() => new Firework());
+
+    function init() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        
+        // 清空现有的hearts数组
+        hearts.length = 0;
+        
+        // 重新初始化漂浮文字
+        for (let i = 0; i < 100; i++) {
+            hearts.push(new Heart());
+        }
+        
+        // 开始渲染
+        render();
+    }
+
+    function render() {
+        // 使用半透明黑色来创建拖尾效果
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.3)';  // 调整透明度
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        
+        // 渲染漂浮文字
+        for (var i = 0; i < hearts.length; i++) {
+            hearts[i].update();
+            hearts[i].draw(ctx, i, colors);
+        }
+        
+        // 渲染烟花
+        fireworks.forEach(fw => {
+            fw.update();
+            fw.draw(ctx);
         });
-		
+        
+        requestAnimationFrame(render);
+    }
+
+    // 添加窗口大小变化监听
+    window.addEventListener("resize", function() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    });
+
+    // 确保在页面加载完成后初始化
+    window.addEventListener('load', function() {
+        init();
+        lovetime();
+    });
     </script>
 
 <div id="frame">
